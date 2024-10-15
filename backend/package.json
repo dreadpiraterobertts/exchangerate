@@ -1,0 +1,23 @@
+{
+  "name": "webscrapper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Mussie",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0",
+    "node-cron": "^3.0.3",
+    "puppeteer": "^23.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
