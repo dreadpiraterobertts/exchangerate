@@ -9,6 +9,9 @@ import abyss from './assets/abyss.png'
 import dashen from './assets/dashen.png'
 import awash from './assets/awash.png'
 
+
+const url = import.meta.env.VITE_URL;
+
 const App = () => {
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
@@ -21,10 +24,10 @@ const App = () => {
     const getData = async () => {
       try {
         const [comResponse, dashenResponse, awashResponse, abyssResponse] = await Promise.all([
-          fetch('http://localhost:3000/getCom'),
-          fetch('http://localhost:3000/getDashen'),
-          fetch('http://localhost:3000/getAwash'),
-          fetch('http://localhost:3000/getAbyss'),
+          fetch(`${url}/getCom`),
+          fetch(`${url}/getDashen`),
+          fetch(`${url}/getAwash`),
+          fetch(`${url}/getAbyss`),
         ]);
 
         if (!comResponse.ok || !dashenResponse.ok || !awashResponse.ok || !abyssResponse.ok) {

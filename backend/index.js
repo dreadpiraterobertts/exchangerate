@@ -9,8 +9,10 @@ const Bank = require('./Bank')
 const abyssinia = require('./abyssinia')
 const cron = require('node-cron');
 const cors = require('cors')
+require('dotenv').config()
 app.use(cors())
-mongoose.connect("mongodb+srv://mussieteklu1:30lLwwUogkhvgb60@cluster0.xhemv.mongodb.net/webscrapper")
+
+mongoose.connect(process.env.CONNECTIONSTRG)
 
 const today = new Date();
 const yyyy = today.getFullYear();
