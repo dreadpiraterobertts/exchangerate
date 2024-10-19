@@ -14,6 +14,9 @@ app.use(cors())
 
 mongoose.connect(process.env.CONNECTIONSTRG)
 
+const time = new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Nairobi', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+
+
 const today = new Date();
 const yyyy = today.getFullYear();
 let mm = today.getMonth() + 1; // Months start at 0!
@@ -40,35 +43,55 @@ const formattedYesterday = prevDD + '/' + prevMM + '/' + prevYYYY;
 
 app.get('/getCom',async(req,res)=>{
     let comData = await Bank.find({bankName:"CBE",date:formattedToday })
-    if (comData.length === 0) {
+    let status ="first"
+    if ( comData.length === 0  && time > "08:30:00") {
+        await cometh()
+        comData = await Bank.find({bankName:"CBE",date:formattedToday })
+        status = "second"
+    }else{
         comData = await Bank.find({ bankName: "CBE", date: formattedYesterday });
+        status = "third"
     }
     
-    res.send(comData)
+    res.send({comData,status})
 })
 app.get('/getDashen',async(req,res)=>{
     let dashenData = await Bank.find({bankName:"Dashen",date:formattedToday })
-    if (dashenData.length === 0) {
+    if (dashenData.length === 0 && time > "08:30:00") {
+        await dashen()
+        dashenData = await Bank.find({bankName:"Dashen",date:formattedToday })
+    }else{
         dashenData = await Bank.find({ bankName: "Dashen", date: formattedYesterday });
     }
     res.send(dashenData)
 })
 app.get('/getAwash',async(req,res)=>{
     let awashData = await Bank.find({bankName:"Awash",date:formattedToday })
-    if (awashData.length === 0) {
+    if (awashData.length === 0  && time > "08:30:00") {
+        await awash()
+        awashData = await Bank.find({bankName:"Awash",date:formattedToday })
+    }else{
         awashData = await Bank.find({ bankName: "Awash", date: formattedYesterday });
     }
     res.send(awashData)
 })
 app.get('/getAbyss',async(req,res)=>{
     let abyssData = await Bank.find({bankName:"Abyssinia",date:formattedToday })
-    if (abyssData.length === 0) {
+    if (abyssData.length === 0  && time > "08:30:00") {
+        await abyss()
+        abyssData = await Bank.find({bankName:"Abyssinia",date:formattedToday })
+    }else{
         abyssData = await Bank.find({ bankName: "Abyssinia", date: formattedYesterday });
     }
     res.send(abyssData)
 })
+//cometh()
+//awash()
+//dashen()
+//abyssinia()
 
-cron.schedule('30 8 * * *', async () => {
+
+/* cron.schedule('30 8 * * *', async () => {
     console.log('Running the scraper...');
     await cometh();
     await awash();
@@ -77,6 +100,6 @@ cron.schedule('30 8 * * *', async () => {
 }, {
     scheduled: true,
     timezone: "Africa/Nairobi" // Set to GMT+3
-});
-
+}); */
+console.log(time)
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
